@@ -1,1 +1,1 @@
-# bettingo
+# gamegon
