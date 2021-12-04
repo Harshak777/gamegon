@@ -3,10 +3,12 @@ import TextField from '@mui/material/TextField';
 import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
+import { useHistory } from "react-router-dom";
 
 import HomeScreenStyles from './HomeScreenStyles';
 
 const HomeScreen = () => {
+    const history = useHistory();
     const classes = HomeScreenStyles();
     return (
         <Container>
@@ -39,7 +41,7 @@ const HomeScreen = () => {
                     </Button>
                 </Grid>
                 <Grid item>
-                    <Button variant="outlined" size="medium">
+                    <Button variant="outlined" size="medium" onClick={() => {history.push('/join')}}>
                         JOIN GAME
                     </Button>
 
