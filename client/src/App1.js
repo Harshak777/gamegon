@@ -29,6 +29,7 @@ class App extends React.Component {
       sourceSquare: "", // where the client's most recent mouse over event was (not holding down the mouse)
       targetSquare: "", // where the client's most recent drag over event was (holding down the mouse)
     };
+
     let socketTemp = io("http://localhost:8080");
     socketTemp.on("connect", () => {
       // initializing the client socket , and setting initial state
@@ -36,11 +37,11 @@ class App extends React.Component {
 
       // when an opponent enters password and sends game request, and it is received by the host
       socketTemp.on("gameSend", (joinObj) => {
-        console.log("message received from" + joinObj.senderId);
+        console.log("message received from " + joinObj.senderId);
 
         // if the received password matches the host password -> start game
         if (this.state.inGame === false && this.state.password !== "") {
-          console.log("message success from" + joinObj.senderId);
+          console.log("message success from " + joinObj.senderId);
 
           this.setState({ opponentSocketId: joinObj.senderId });
           let newObj = {
@@ -85,6 +86,7 @@ class App extends React.Component {
         }
       });
     });
+
     this.handleCreationInput = this.handleCreationInput.bind(this);
     this.handleJoinInput = this.handleJoinInput.bind(this);
     this.handleCreationInputChange = this.handleCreationInputChange.bind(this);
@@ -230,7 +232,7 @@ class App extends React.Component {
       );
     } else {
       UserMenu = (
-        <div class="form-container">
+        <div className="form-container">
           <Chessboard
             position={this.state.currentPositionFen}
             orientation={this.state.userColor}
