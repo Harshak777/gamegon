@@ -11,6 +11,7 @@ import HomeScreenStyles from './HomeScreenStyles';
 
 const HomeScreen = (props) => {
     
+    console.log(props)
 
     const history = useHistory();
     const classes = HomeScreenStyles();
