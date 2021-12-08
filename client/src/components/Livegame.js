@@ -9,6 +9,8 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import Button from "@mui/material/Button";
+import io  from "socket.io-client";
+import { withRouter } from "react-router-dom";
 
 class Livegame extends Component {
   constructor(props) {
@@ -17,7 +19,16 @@ class Livegame extends Component {
       avaiablebets: [],
       betdetails: [],
       account: null,
+      socketObject: null
     };
+
+    console.log(props);
+
+    let socketTemp = io("http://localhost:8080");
+
+    socketTemp.on("connect", () => {
+      this.setState({socketObject: socketTemp});
+    })
   }
   //=================================GET AVAILABLE BETS=====================================
   async componentWillMount() {
@@ -51,6 +62,15 @@ class Livegame extends Component {
 
   //==================================Accept BET==========================================
   onClick = async (id, value) => {
+
+    // let joinObject = {
+    //   senderId: this.state.userSocketId,
+    //   pw: this.state.gameJoinInput,
+    // };
+
+    // this.state.userSocket.emit("JoinGame", joinObject); // user asking to join another player's game
+    // this.setState({ gameJoinInput: "" });
+
     const web3 = new Web3(Web3.givenProvider);
 
     contract.methods
@@ -62,6 +82,14 @@ class Livegame extends Component {
       })
       .then((receipt) => {
         console.log(receipt);
+        for(let i of this.state.betdetails) {
+          if(i.id == id) {
+            console.log(i.name);
+            this.state.socketObject.emit("finalShake", i.name);
+            this.props.history.push("/chessGame", {inGame: true, color: "black"})
+          }
+        }
+        
       });
   };
   render() {
@@ -118,4 +146,4 @@ class Livegame extends Component {
   }
 }
 
-export default Livegame;
+export default withRouter(Livegame);
