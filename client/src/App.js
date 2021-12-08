@@ -5,6 +5,7 @@ import Typography from "@material-ui/core/Typography";
 
 import HomeScreen from "./containers/HomeScreen";
 import GamesArena from "./containers/GamesArena";
+import Livegame from "./components/Livegame";
 
 import Web3 from "web3";
 
@@ -277,55 +278,7 @@ const App = () => {
         );
   }
 
-  getbetdetail(3);
-
-  //===============================================PUBLISH BET=================================
-  async function publishBet(servername, game, value) {
-    const web3 = new Web3(Web3.givenProvider);
-    if (contract != null)
-      contract.methods
-        .publishBet("1", "chess")
-        .send({
-          from: account,
-          gasLimit: web3.eth.getBlock("latest").gasLimit,
-          value: web3.utils.toWei(".001", "ether"),
-        })
-        .then((receipt) => {
-          console.log(receipt);
-        });
-  }
-  // publishBet ()
-
-  //==================================Accept BET==========================================
-  async function acceptBet(betid, value) {
-    const web3 = new Web3(Web3.givenProvider);
-    if (contract != null)
-      contract.methods
-        .acceptBet("3")
-        .send({
-          from: account,
-          gasPrice: 10000000,
-          value: web3.utils.toWei(".001", "ether"),
-        })
-        .then((receipt) => {
-          console.log(receipt);
-        });
-  }
-
-  //=================================GET AVAILABLE BETS=====================================
-
-  async function getavailablebets() {
-    if (contract != null)
-      contract.methods
-        .getAvailableBets()
-        .call()
-        .then(
-          (result) => {
-            console.log(result);
-          }
-          // do stuff with returned values
-        );
-  }
+  //   getbetdetail(3);
 
   //====================ResolveBet==============================
   async function resolveBet(betid, challengerWins) {
@@ -347,8 +300,8 @@ const App = () => {
     return (
       <div>
         <Router>
-          <Route exact path="/" component={HomeScreen} account={account} />
-          <Route path="/join" component={GamesArena} />
+          <Route exact path="/" component={HomeScreen} />
+          <Route path="/join" component={Livegame} />
         </Router>
       </div>
     );
