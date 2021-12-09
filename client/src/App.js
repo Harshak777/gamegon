@@ -6,6 +6,7 @@ import Typography from "@material-ui/core/Typography";
 import HomeScreen from "./containers/HomeScreen";
 import GamesArena from "./containers/GamesArena";
 import Livegame from "./components/Livegame";
+import ChessGame from "./containers/ChessGame";
 
 import Web3 from "web3";
 
@@ -302,6 +303,7 @@ const App = () => {
         <Router>
           <Route exact path="/" component={HomeScreen} />
           <Route path="/join" component={Livegame} />
+          <Route path="/chessGame" component={ChessGame} />
         </Router>
       </div>
     );

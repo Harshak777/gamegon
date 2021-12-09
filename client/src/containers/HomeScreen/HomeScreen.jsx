@@ -53,57 +53,6 @@ const HomeScreen = (props) => {
       setUserSocketId(socketTemp.id);
 
       console.log(socketTemp.id);
-
-      // when an opponent enters password and sends game request, and it is received by the host
-      socketTemp.on("gameSend", (joinObj) => {
-        console.log("message received from " + joinObj.senderId);
-
-        // if the received password matches the host password -> start game
-        if (this.state.inGame === false && this.state.password !== "") {
-          console.log("message success from " + joinObj.senderId);
-
-          this.setState({ opponentSocketId: joinObj.senderId });
-          let newObj = {
-            usrId: this.state.userSocketId,
-            ownerId: joinObj.senderId,
-            recipientColor: this.state.opponentColor,
-            opponentColor: this.state.userColor,
-          };
-          // this sends a final handshake to the person joining the host's game via password
-
-          socketTemp.emit("finalShake", newObj);
-          this.setState({ inGame: true }); // renders the chessboard for the host
-        }
-      });
-      socketTemp.on("NewCurrentPosition", (FENstring) => {
-        //updates the new current chess position
-        this.setState({ currentPositionFen: FENstring });
-      });
-      socketTemp.on(socketTemp.id, (oppObj) => {
-        console.log("final shake ");
-        this.setState({ opponentSocketId: oppObj.usrId }); // receives final handshake
-        this.setState({ userColor: oppObj.recipientColor });
-        this.setState({ opponentColor: oppObj.opponentColor });
-        this.setState({ inGame: true });
-        this.setState({ currentPositionFen: this.state.chessGameObject.fen() });
-      });
-
-      // when a new fen is received, (that is validated by the sender) : update the recipient fen
-      socketTemp.on("NewFenFromServer", (FENobj) => {
-        // checks if the FEN is intended for the recipient
-        if (this.state.userSocketId === FENobj.RecipientSocketID) {
-          this.setState({
-            currentPositionFen: FENobj.FEN,
-          });
-          this.state.chessGameObject.move(FENobj.move);
-
-          // this means the game has ended
-          if (this.state.chessGameObject.game_over() === true) {
-            console.log("GAME OVER");
-            //trigger modal and end the game
-          }
-        }
-      });
     });
   }
 
@@ -128,7 +77,7 @@ const HomeScreen = (props) => {
       })
       .then((receipt) => {
         console.log(receipt);
-        history.push("/chessGame", {inGame: false, color: "white"});
+        history.push({pathname: "/chessGame", state: {inGame: false, color: "white", gameId: userSocketId}});
       });
   }
 

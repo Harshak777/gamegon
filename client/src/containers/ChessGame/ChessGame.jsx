@@ -3,101 +3,118 @@ import Chessboard from "chessboardjsx";
 import Chess from "chess.js";
 import io  from "socket.io-client";
 
-const [chessGameObject,  setChessGameObject] = useState(new Chess());
-
-useEffect(() => {
-    let socketTemp = io("http://localhost:8080");
-    function loadSocketIO() {
-        socketTemp.on("connect", () => {
-
-        })
-    }
-    loadSocketIO();
-  }, []);
-
-setColor = (ev) => {
-    this.setState({ userColor: ev.target.value });
-    ev.target.value === "white"
-        ? this.setState({ opponentColor: "black" })
-        : this.setState({ opponentColor: "white" });
-
-    console.log(
-        "Your color: " +
-        this.state.userColor +
-        "/n" +
-        "Opp color: " +
-        this.state.opponentColor
-    );
-}
-
-ValidateMove = ({
-    src = this.state.sourceSquare,
-    targ = this.state.targetSquare,
-}) => {
-console.log("move being validated");
-if (src !== targ && this.state.chessGameObject.game_over() !== true) {
-    this.state.chessGameObject.move({
-    from: src,
-    to: targ,
-    promotion: "q",
-    });
-    if (this.state.chessGameObject.game_over() !== true) {
-    console.log("Fen about to send off");
-    this.setState({ currentPositionFen: this.state.chessGameObject.fen() });
-    this.SendNewFen(this.state.chessGameObject.fen(), {
-        from: this.state.sourceSquare,
-        to: this.state.targetSquare,
-        promotion: "q",
-    });
-    } else {
-    // the move that was just made ended the game
-    console.log("GAME OVER");
-    this.setState({ currentPositionFen: this.state.chessGameObject.fen() });
-    this.SendNewFen(this.state.chessGameObject.fen(), {
-        from: this.state.sourceSquare,
-        to: this.state.targetSquare,
-        promotion: "q",
-    });
-    //trigger modal and end game
-    }
-}
-};
-
-SendNewFen = (NewFEN, move) => {
-    userSocket.emit("PositionSend", {
-        FEN: NewFEN,
-        RecipientSocketID: this.state.opponentSocketId,
-        move: move,
-    });
-}
-
-onMouseOverSquare = (sq) => {
-    this.setState({ sourceSquare: sq });
-
-};
-
-onDragOverSquare = (sq) => {
-    if (this.state.sourceSquare !== sq) {
-        this.setState({ targetSquare: sq });
-    }
-};
-
 const ChessGame = (props) => {
 
-    console.log(props);
+    const [chessGameObject, setChessGameObject] = useState(new Chess());
+    const [inGame, setInGame] = useState(false);
+    const [currentPositionFen, setCurrentPositionFen] = useState(null);
+    const [userColor, setUserColor] = useState("");
+    const [sourceSquare, setSourceSquare] = useState("");
+    const [targetSquare, setTargetSquare] = useState("");
+    const [socketObject, setSocketObject] = useState(null);
+    const [gameId, setGameId] = useState(null);
 
-    const inGame = false;
-    let UserMenu
+    useEffect(() => {
+        let socketTemp = io("http://localhost:8080");
+        function loadSocketIO() {
+            socketTemp.on("connect", () => {
+                socketTemp.on(gameId, (oppObj) => {
+                    console.log("final shake ");
+                    setSocketObject(socketTemp);
+    
+                    setInGame(true);
+                    setCurrentPositionFen(this.state.chessGameObject.fen());
+    
+                    socketTemp.on("NewFenFromServer", (FENobj) => {
+                        // checks if the FEN is intended for the recipient
+                        if (gameId === FENobj.SocketID) {
+                            currentPositionFen(FENobj.FEN);
+                            chessGameObject.move(FENobj.move);
+                
+                          // this means the game has ended
+                          if (chessGameObject.game_over() === true) {
+                            console.log("GAME OVER");
+                            //trigger modal and end the game
+                          }
+                        }
+                      });
+    
+                      socketTemp.on("NewCurrentPosition", (FENstring) => {
+                        currentPositionFen(FENstring);
+                      });
+                  });
+            })
+        }
+        loadSocketIO();
+      }, []);
+
+    const ValidateMove = ({
+        src = sourceSquare,
+        targ = targetSquare,
+    }) => {
+    console.log("move being validated");
+    if (src !== targ && chessGameObject.game_over() !== true) {
+        chessGameObject.move({
+        from: src,
+        to: targ,
+        promotion: "q",
+        });
+        if (chessGameObject.game_over() !== true) {
+        console.log("Fen about to send off");
+        setCurrentPositionFen(chessGameObject.fen());
+        SendNewFen(chessGameObject.fen(), {
+            from: sourceSquare,
+            to: targetSquare,
+            promotion: "q",
+        });
+        } else {
+        // the move that was just made ended the game
+        console.log("GAME OVER");
+        setCurrentPositionFen(chessGameObject.fen());
+        SendNewFen(chessGameObject.fen(), {
+            from: sourceSquare,
+            to: targetSquare,
+            promotion: "q",
+        });
+        //trigger modal and end game
+        }
+    }
+    };
+    
+    const SendNewFen = (NewFEN, move) => {
+        socketObject.emit("PositionSend", {
+            FEN: NewFEN,
+            GameID: gameId,
+            move: move,
+        });
+    }
+    
+    const onMouseOverSquare = (sq) => {
+        setSourceSquare(sq);
+    };
+    
+    const onDragOverSquare = (sq) => {
+        if (sourceSquare !== sq) {
+            setTargetSquare(sq);
+        }
+    };
+    
+
+    console.log(props);
+    setUserColor("");
+    setInGame("");
+    setGameId("");
+    let UserMenu;
 
     if(inGame) {
         UserMenu = (
             <div className="form-container">
               <Chessboard
-                position={this.state.currentPositionFen}
-                orientation={this.state.userColor}
-                onMouseOverSquare={this.onMouseOverSquare}
-                onDragOverSquare={this.onDragOverSquare}
-                onDrop={this.ValidateMove}
+                position={currentPositionFen}
+                orientation={userColor}
+                onMouseOverSquare={onMouseOverSquare}
+                onDragOverSquare={onDragOverSquare}
+                onDrop={ValidateMove}
                 darkSquareStyle= { {backgroundColor: '#429963' }}
               />
             </div>

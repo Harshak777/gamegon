@@ -86,7 +86,7 @@ class Livegame extends Component {
           if(i.id == id) {
             console.log(i.name);
             this.state.socketObject.emit("finalShake", i.name);
-            this.props.history.push("/chessGame", {inGame: true, color: "black"})
+            this.props.history.push("/chessGame", {inGame: true, color: "black", gameId: i.name})
           }
         }
         
