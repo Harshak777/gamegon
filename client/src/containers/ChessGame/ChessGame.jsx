@@ -33,11 +33,14 @@ const ChessGame = (props) => {
     
                     setInGame(true);
                     // setCurrentPositionFen(chessGameObject.fen());
-                    console.log(inGame)
+                    console.log(inGame);
                     socketTemp.on("NewFenFromServer", (FENobj) => {
-                        if (gameId === FENobj.SocketID) {
-                            currentPositionFen(FENobj.FEN);
+                        console.log("New FEN received");
+                        console.log(gameId, FENobj);
+                        if (props.location.state.gameId == FENobj.GameID) {
+                            setCurrentPositionFen(FENobj.FEN);
                             chessGameObject.move(FENobj.move);
+                            console.log("Move Changed");
                 
                           // this means the game has ended
                           if (chessGameObject.game_over() === true) {
@@ -48,7 +51,7 @@ const ChessGame = (props) => {
                       });
     
                       socketTemp.on("NewCurrentPosition", (FENstring) => {
-                        currentPositionFen(FENstring);
+                        setCurrentPositionFen(FENstring);
                       });
                   });
             })
@@ -67,6 +70,7 @@ const ChessGame = (props) => {
         to: targ,
         promotion: "q",
         });
+        console.log("moved");
         if (chessGameObject.game_over() !== true) {
         console.log("Fen about to send off");
         setCurrentPositionFen(chessGameObject.fen());
@@ -90,6 +94,7 @@ const ChessGame = (props) => {
     };
     
     const SendNewFen = (NewFEN, move) => {
+        console.log("called");
         socketObject.emit("PositionSend", {
             FEN: NewFEN,
             GameID: gameId,
@@ -98,17 +103,20 @@ const ChessGame = (props) => {
     }
     
     const onMouseOverSquare = (sq) => {
+        // console.log(sq);
         setSourceSquare(sq);
     };
     
     const onDragOverSquare = (sq) => {
+        console.log(sq, sourceSquare);
         if (sourceSquare !== sq) {
+            console.log("inside setting target");
             setTargetSquare(sq);
         }
     };
     
 
-    console.log(props);
+    // console.log(props);
 
     let UserMenu;
 
