@@ -29,7 +29,7 @@ const HomeScreen = (props) => {
       const web3 = new Web3(Web3.givenProvider);
       const accounts = await web3.eth.getAccounts();
       setAccount(accounts[0]);
-
+      chessSocket();
       console.log(account);
     }
     loadBlockChain();
@@ -60,8 +60,6 @@ const HomeScreen = (props) => {
   const classes = HomeScreenStyles();
   //===============================================PUBLISH BET=================================
   async function publishBet() {
-
-    chessSocket();
 
     console.log("came");
     console.log(userSocketId);

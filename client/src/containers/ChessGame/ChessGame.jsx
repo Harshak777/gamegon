@@ -6,7 +6,7 @@ import io  from "socket.io-client";
 const ChessGame = (props) => {
 
     // const [chessGameObject, setChessGameObject] = useState(new Chess());
-    const chessGameObject= new Chess()
+    const chessGameObject = new Chess()
     const [inGame, setInGame] = useState(false);
     const [currentPositionFen, setCurrentPositionFen] = useState(null);
     const [userColor, setUserColor] = useState("");
@@ -17,6 +17,11 @@ const ChessGame = (props) => {
 
     useEffect(() => {
         let socketTemp = io("http://localhost:8080");
+
+        setUserColor(props.location.state.color);
+        setInGame(props.location.state.inGame);
+        setGameId(props.location.state.gameId);
+
         function loadSocketIO() {
             socketTemp.on("connect", () => {
                 socketTemp.on(gameId, (oppObj) => {
@@ -24,10 +29,9 @@ const ChessGame = (props) => {
                     setSocketObject(socketTemp);
     
                     setInGame(true);
-                    setCurrentPositionFen(this.state.chessGameObject.fen());
+                    setCurrentPositionFen(chessGameObject.fen());
                     console.log(inGame)
                     socketTemp.on("NewFenFromServer", (FENobj) => {
-                        // checks if the FEN is intended for the recipient
                         if (gameId === FENobj.SocketID) {
                             currentPositionFen(FENobj.FEN);
                             chessGameObject.move(FENobj.move);
@@ -101,10 +105,8 @@ const ChessGame = (props) => {
     };
     
 
-    // console.log(props);
-    // setUserColor("");
-    // setInGame("");
-    // setGameId("");
+    console.log(props);
+
     let UserMenu;
 
     if(inGame) {
