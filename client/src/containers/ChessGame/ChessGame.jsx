@@ -8,7 +8,7 @@ const ChessGame = (props) => {
     // const [chessGameObject, setChessGameObject] = useState(new Chess());
     const chessGameObject = new Chess()
     const [inGame, setInGame] = useState(false);
-    const [currentPositionFen, setCurrentPositionFen] = useState(null);
+    const [currentPositionFen, setCurrentPositionFen] = useState(chessGameObject.fen());
     const [userColor, setUserColor] = useState("");
     const [sourceSquare, setSourceSquare] = useState("");
     const [targetSquare, setTargetSquare] = useState("");
@@ -27,12 +27,12 @@ const ChessGame = (props) => {
 
         function loadSocketIO() {
             socketTemp.on("connect", () => {
-                socketTemp.on(gameId, (oppObj) => {
+                setSocketObject(socketTemp);
+                socketTemp.on(props.location.state.gameId, (oppObj) => {
                     console.log("final shake ", oppObj);
-                    setSocketObject(socketTemp);
     
                     setInGame(true);
-                    setCurrentPositionFen(chessGameObject.fen());
+                    // setCurrentPositionFen(chessGameObject.fen());
                     console.log(inGame)
                     socketTemp.on("NewFenFromServer", (FENobj) => {
                         if (gameId === FENobj.SocketID) {
