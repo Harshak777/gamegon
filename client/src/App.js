@@ -9,7 +9,7 @@ import Livegame from "./components/Livegame";
 import ChessGame from "./containers/ChessGame";
 
 import Web3 from "web3";
-
+import getWeb3 from "./components/web3";
 const App = () => {
   const [account, setAccount] = useState("");
   const [isloading, setIsloading] = useState(true);
@@ -19,11 +19,19 @@ const App = () => {
     //============LOADING ADDRESs=============
     async function loadBlockChain() {
       // console.log(web3);
-      const web3 = new Web3(Web3.givenProvider);
-      const accounts = await web3.eth.getAccounts();
-      setAccount(accounts[0]);
+    //   const web3 = new Web3(Web3.givenProvider);
+    //   const accounts = await web3.eth.getAccounts();
+    //   setAccount(accounts[0]);
 
-      console.log(account);
+    //   console.log(account);
+    getWeb3()
+    .then((result) => {
+      const web3 = result;
+      web3.eth.getAccounts()
+  .then((accounts) => {
+    setAccount(accounts[0]);
+  })// we instantiate our contract next
+    });
     }
     loadBlockChain();
 
