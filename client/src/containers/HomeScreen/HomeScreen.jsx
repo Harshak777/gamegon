@@ -75,7 +75,7 @@ const HomeScreen = (props) => {
       })
       .then((receipt) => {
         console.log(receipt);
-        history.push({pathname: "/chessGame", state: {inGame: false, color: "white", gameId: userSocketId}});
+        history.push({pathname: "/chessGame", state: {inGame: false, color: "white", gameId: userSocketId, betId: receipt.events.LogPublishBet.returnValues._id}});
       });
   }
 

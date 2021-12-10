@@ -2,11 +2,13 @@ import React, { useState, useEffect } from 'react';
 import Chessboard from "chessboardjsx";
 import Chess from "chess.js";
 import io  from "socket.io-client";
+import Web3 from "web3";
+import contract from "../../components/contract";
 
 const ChessGame = (props) => {
 
-    // const [chessGameObject, setChessGameObject] = useState(new Chess());
-    const chessGameObject = new Chess()
+    const [chessGameObject, setChessGameObject] = useState(new Chess());
+    // const chessGameObject = new Chess();
     const [inGame, setInGame] = useState(false);
     const [currentPositionFen, setCurrentPositionFen] = useState(chessGameObject.fen());
     const [userColor, setUserColor] = useState("");
@@ -14,6 +16,7 @@ const ChessGame = (props) => {
     const [targetSquare, setTargetSquare] = useState("");
     const [socketObject, setSocketObject] = useState(null);
     const [gameId, setGameId] = useState(null);
+    const [account, setAccount] = useState("");
 
     useEffect(() => {
         let socketTemp = io("http://localhost:8080");
@@ -26,14 +29,19 @@ const ChessGame = (props) => {
         console.log(gameId)
 
         function loadSocketIO() {
+
             socketTemp.on("connect", () => {
                 setSocketObject(socketTemp);
+                console.log(socketTemp, "inside");
                 socketTemp.on(props.location.state.gameId, (oppObj) => {
                     console.log("final shake ", oppObj);
     
                     setInGame(true);
+
                     // setCurrentPositionFen(chessGameObject.fen());
                     console.log(inGame);
+
+                });
                     socketTemp.on("NewFenFromServer", (FENobj) => {
                         console.log("New FEN received");
                         console.log(gameId, FENobj);
@@ -44,6 +52,7 @@ const ChessGame = (props) => {
                 
                           // this means the game has ended
                           if (chessGameObject.game_over() === true) {
+                            
                             console.log("GAME OVER");
                             //trigger modal and end the game
                           }
@@ -53,11 +62,33 @@ const ChessGame = (props) => {
                       socketTemp.on("NewCurrentPosition", (FENstring) => {
                         setCurrentPositionFen(FENstring);
                       });
-                  });
+                  
             })
         }
+
+        async function loadWeb3 () {
+            const web3 = new Web3(Web3.givenProvider);
+            const accounts = await web3.eth.getAccounts();
+            setAccount(accounts[0]);
+            console.log(account);
+        }
+        loadWeb3();
         loadSocketIO();
       }, []);
+
+      async function resolveBet(betid, challengerWins) {
+        const web3 = new Web3(Web3.givenProvider);
+        if (contract != null)
+          contract.methods
+            .resolveBet(betid, challengerWins)
+            .send({
+              from: account,
+              gasLimit: web3.eth.getBlock("latest").gasLimit
+            })
+            .then((receipt) => {
+              console.log(receipt);
+            });
+      }
 
     const ValidateMove = ({
         src = sourceSquare,
@@ -74,6 +105,7 @@ const ChessGame = (props) => {
         if (chessGameObject.game_over() !== true) {
         console.log("Fen about to send off");
         setCurrentPositionFen(chessGameObject.fen());
+        // console.log(currentPositionFen);
         SendNewFen(chessGameObject.fen(), {
             from: sourceSquare,
             to: targetSquare,
@@ -88,6 +120,16 @@ const ChessGame = (props) => {
             to: targetSquare,
             promotion: "q",
         });
+
+        let winner = null;
+        if(props.location.state.color == "white") {
+            winner = 1;
+        } else {
+            winner = 0;
+        }
+
+        // resolveBet(props.location.state.betId, winner);
+        console.log(resolveBet(props.location.state.betId, winner));
         //trigger modal and end game
         }
     }
@@ -95,6 +137,7 @@ const ChessGame = (props) => {
     
     const SendNewFen = (NewFEN, move) => {
         console.log("called");
+        console.log(NewFEN);
         socketObject.emit("PositionSend", {
             FEN: NewFEN,
             GameID: gameId,
