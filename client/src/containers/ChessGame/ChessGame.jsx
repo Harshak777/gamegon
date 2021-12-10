@@ -5,7 +5,8 @@ import io  from "socket.io-client";
 
 const ChessGame = (props) => {
 
-    const [chessGameObject, setChessGameObject] = useState(new Chess());
+    // const [chessGameObject, setChessGameObject] = useState(new Chess());
+    const chessGameObject= new Chess()
     const [inGame, setInGame] = useState(false);
     const [currentPositionFen, setCurrentPositionFen] = useState(null);
     const [userColor, setUserColor] = useState("");
@@ -24,7 +25,7 @@ const ChessGame = (props) => {
     
                     setInGame(true);
                     setCurrentPositionFen(this.state.chessGameObject.fen());
-    
+                    console.log(inGame)
                     socketTemp.on("NewFenFromServer", (FENobj) => {
                         // checks if the FEN is intended for the recipient
                         if (gameId === FENobj.SocketID) {
@@ -100,10 +101,10 @@ const ChessGame = (props) => {
     };
     
 
-    console.log(props);
-    setUserColor("");
-    setInGame("");
-    setGameId("");
+    // console.log(props);
+    // setUserColor("");
+    // setInGame("");
+    // setGameId("");
     let UserMenu;
 
     if(inGame) {
