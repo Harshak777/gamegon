@@ -1,32 +1,29 @@
 import Web3 from 'web3';
 
-
-const web3 = () => {
-  window.addEventListener('load', async () => {
+const getWeb3 = () => new Promise((resolve) => {
+  window.addEventListener('load', () => {
     let currentWeb3;
 
     if (window.ethereum) {
-      window.web3 = new Web3(Web3.ethereum);
-      console.log("1");
+      currentWeb3 = new Web3(window.ethereum);
       try {
         // Request account access if needed
-        await window.ethereum.enable();
+        window.ethereum.enable();
         // Acccounts now exposed
-        // resolve(currentWeb3);
+        resolve(currentWeb3);
       } catch (error) {
         // User denied account access...
         alert('Please allow access for the app to work');
       }
     } else if (window.web3) {
-      window.web3 = new Web3(window.web3.currentProvider);
-      console.log(2);
+      window.web3 = new Web3(Web3.currentProvider);
       // Acccounts always exposed
-      // resolve(currentWeb3);
+      resolve(currentWeb3);
     } else {
       console.log('Non-Ethereum browser detected. You should consider trying MetaMask!');
     }
   });
-};
+});
 
 
-export default web3 
+export default getWeb3;
