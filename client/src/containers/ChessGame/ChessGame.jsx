@@ -22,10 +22,13 @@ const ChessGame = (props) => {
         setInGame(props.location.state.inGame);
         setGameId(props.location.state.gameId);
 
+        console.log(props.location.state.gameId)
+        console.log(gameId)
+
         function loadSocketIO() {
             socketTemp.on("connect", () => {
                 socketTemp.on(gameId, (oppObj) => {
-                    console.log("final shake ");
+                    console.log("final shake ", oppObj);
                     setSocketObject(socketTemp);
     
                     setInGame(true);

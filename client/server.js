@@ -20,7 +20,8 @@ io.on("connection", (socket) => {
   console.log("a user connected");
 
   socket.on("finalShake", (name) => {
-    socket.broadcast.emit(name, Object);
+    console.log(name);
+    socket.broadcast.emit(name, "hello");
   });
 
   socket.on("JoinGame", (joinObject) => {
