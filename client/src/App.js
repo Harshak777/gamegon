@@ -4,7 +4,7 @@ import { Route, BrowserRouter as Router } from "react-router-dom";
 import Typography from "@material-ui/core/Typography";
 
 import HomeScreen from "./containers/HomeScreen";
-import GamesArena from "./containers/GamesArena";
+
 import Livegame from "./components/Livegame";
 import ChessGame from "./containers/ChessGame";
 
@@ -18,20 +18,12 @@ const App = () => {
   useEffect(() => {
     //============LOADING ADDRESs=============
     async function loadBlockChain() {
-      // console.log(web3);
-    //   const web3 = new Web3(Web3.givenProvider);
-    //   const accounts = await web3.eth.getAccounts();
-    //   setAccount(accounts[0]);
-
-    //   console.log(account);
-    getWeb3()
-    .then((result) => {
-      const web3 = result;
-      web3.eth.getAccounts()
-  .then((accounts) => {
-    setAccount(accounts[0]);
-  })// we instantiate our contract next
-    });
+      getWeb3().then((result) => {
+        const web3 = result;
+        web3.eth.getAccounts().then((accounts) => {
+          setAccount(accounts[0]);
+        }); // we instantiate our contract next
+      });
     }
     loadBlockChain();
 
@@ -285,23 +277,6 @@ const App = () => {
           }
           // do stuff with returned values
         );
-  }
-
-  //   getbetdetail(3);
-
-  //====================ResolveBet==============================
-  async function resolveBet(betid, challengerWins) {
-    const web3 = new Web3(Web3.givenProvider);
-    if (contract != null)
-      contract.methods
-        .resolveBet("3", "1")
-        .send({
-          from: account,
-          gasPrice: 10000000,
-        })
-        .then((receipt) => {
-          console.log(receipt);
-        });
   }
 
   if (isloading) return <h1>loading</h1>;

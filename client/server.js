@@ -16,7 +16,6 @@ const io = require("socket.io")(server, {
 }); // creating socketio server side with express http server
 
 io.on("connection", (socket) => {
-
   console.log("a user connected");
 
   socket.on("finalShake", (name) => {
@@ -34,7 +33,6 @@ io.on("connection", (socket) => {
     console.log("Position send worked");
     socket.broadcast.emit("NewFenFromServer", FENinfo);
   });
-
 });
 
 server.listen(PORT, () => console.log(`Server running on port:${PORT}`));

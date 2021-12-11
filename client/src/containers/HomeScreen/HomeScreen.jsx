@@ -8,8 +8,7 @@ import web3 from "../../components/web3";
 import contract from "../../components/contract";
 import HomeScreenStyles from "./HomeScreenStyles";
 import Web3 from "web3";
-import io  from "socket.io-client";
-
+import io from "socket.io-client";
 
 const HomeScreen = (props) => {
   const [account, setAccount] = useState("");
@@ -19,8 +18,7 @@ const HomeScreen = (props) => {
   const [value, setValue] = useState("");
   const [game, setgame] = useState("");
 
-  const [userSocketId, setUserSocketId]= useState("");
-
+  const [userSocketId, setUserSocketId] = useState("");
 
   useEffect(() => {
     //============LOADING ADDRESS=============
@@ -60,7 +58,6 @@ const HomeScreen = (props) => {
   const classes = HomeScreenStyles();
   //===============================================PUBLISH BET=================================
   async function publishBet() {
-
     console.log("came");
     console.log(userSocketId);
 
@@ -75,7 +72,15 @@ const HomeScreen = (props) => {
       })
       .then((receipt) => {
         console.log(receipt);
-        history.push({pathname: "/chessGame", state: {inGame: false, color: "white", gameId: userSocketId, betId: receipt.events.LogPublishBet.returnValues._id}});
+        history.push({
+          pathname: "/chessGame",
+          state: {
+            inGame: false,
+            color: "white",
+            gameId: userSocketId,
+            betId: receipt.events.LogPublishBet.returnValues._id,
+          },
+        });
       });
   }
 
