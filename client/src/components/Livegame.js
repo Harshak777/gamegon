@@ -9,6 +9,7 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import Button from "@mui/material/Button";
+import { Typography } from "@material-ui/core";
 import io from "socket.io-client";
 import { withRouter } from "react-router-dom";
 
@@ -98,7 +99,12 @@ class Livegame extends Component {
   render() {
     const web3 = new Web3(Web3.givenProvider);
     return (
+      <div>
+      <Typography component="h2" variant="h6" color="primary" gutterBottom>
+      JOIN GAME
+    </Typography>
       <TableContainer component={Paper}>
+          
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>
             <TableRow>
@@ -145,6 +151,7 @@ class Livegame extends Component {
           </TableBody>
         </Table>
       </TableContainer>
+      </div>
     );
   }
 }
