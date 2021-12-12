@@ -100,7 +100,7 @@ class Livegame extends Component {
     const web3 = new Web3(Web3.givenProvider);
     return (
       <div>
-      <Typography component="h2" variant="h6" color="primary" gutterBottom>
+      <Typography component="h1" variant="h4" color="primary" gutterBottom>
       JOIN GAME
     </Typography>
       <TableContainer component={Paper}>
@@ -110,7 +110,7 @@ class Livegame extends Component {
             <TableRow>
               <TableCell>Id</TableCell>
               <TableCell>Challenger</TableCell>
-              <TableCell>Name</TableCell>
+              <TableCell>Server Name</TableCell>
               <TableCell>Game</TableCell>
               <TableCell>Price</TableCell>
               <TableCell></TableCell>
@@ -132,7 +132,7 @@ class Livegame extends Component {
                   {row.challenger != this.state.account ? (
                     <Button
                       variant="contained"
-                      color="success"
+                      color="primary"
                       onClick={() =>
                         this.onClick(
                           row.id,

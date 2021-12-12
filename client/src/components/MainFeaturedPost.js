@@ -19,7 +19,7 @@ function MainFeaturedPost(props) {
         backgroundSize: 'cover',
         backgroundRepeat: 'no-repeat',
         backgroundPosition: 'center',
-        backgroundImage: `url(${post.image})`,
+        backgroundImage: `url(https://stepico.com/wp-content/uploads/2021/09/Group-21.png)`,
       }}
     >
       {/* Increase the priority of the hero background image */}

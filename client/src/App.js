@@ -4,10 +4,12 @@ import { Route, BrowserRouter as Router } from "react-router-dom";
 import Typography from "@material-ui/core/Typography";
 
 import HomeScreen from "./containers/HomeScreen";
-
+import Box from "@material-ui/core/Box";
 import Livegame from "./components/Livegame";
 import ChessGame from "./containers/ChessGame";
-
+import Loadingpage from "./components/Loadingpage";
+import winnerpage from "./components/winnerpage";
+import loserpage from "./components/loserpage";
 import Web3 from "web3";
 import getWeb3 from "./components/web3";
 const App = () => {
@@ -282,13 +284,23 @@ const App = () => {
   if (isloading) return <h1>loading</h1>;
   else
     return (
+      <Box
+      sx={{
+        minHeight: "100vh",
+        background:
+          "url(https://academy.binance.com/_next/image?url=https%3A%2F%2Fimage.binance.vision%2Fuploads-original%2F4ae6b499dfd3459592e79b822323259c.png&w=750&q=80) no-repeat center center",
+        backgroundSize: "cover",
+      }}
+    >
       <div>
         <Router>
           <Route exact path="/" component={HomeScreen} />
-          <Route path="/join" component={Livegame} />
+          <Route path="/notwinner" component={loserpage} />
+          <Route path="/winner" component={winnerpage} />
           <Route path="/chessGame" component={ChessGame} />
         </Router>
       </div>
+      </Box>
     );
 };
 

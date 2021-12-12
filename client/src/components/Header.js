@@ -15,9 +15,9 @@ function Header(props) {
       <Toolbar sx={{ borderBottom: 1, borderColor: 'divider' }}>
         
         <Typography
-          component="h2"
+          component="h1"
           variant="h5"
-          color="inherit"
+        color="white"
           align="center"
           noWrap
           sx={{ flex: 1 }}
