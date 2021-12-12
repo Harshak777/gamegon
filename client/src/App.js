@@ -8,10 +8,11 @@ import Box from "@material-ui/core/Box";
 import Livegame from "./components/Livegame";
 import ChessGame from "./containers/ChessGame";
 import Loadingpage from "./components/Loadingpage";
-import winnerpage from "./components/winnerpage";
-import loserpage from "./components/loserpage";
+import WinnerPage from "./components/winnerpage";
+import LoserPage from "./components/loserpage";
 import Web3 from "web3";
 import getWeb3 from "./components/web3";
+
 const App = () => {
   const [account, setAccount] = useState("");
   const [isloading, setIsloading] = useState(true);
@@ -295,8 +296,8 @@ const App = () => {
       <div>
         <Router>
           <Route exact path="/" component={HomeScreen} />
-          <Route path="/notwinner" component={loserpage} />
-          <Route path="/winner" component={winnerpage} />
+          <Route path="/notwinner" component={LoserPage} />
+          <Route path="/winner" component={WinnerPage} />
           <Route path="/chessGame" component={ChessGame} />
         </Router>
       </div>

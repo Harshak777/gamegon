@@ -25,7 +25,7 @@ class Livegame extends Component {
 
     console.log(props);
 
-    let socketTemp = io("http://localhost:8080");
+    let socketTemp = io("https://dry-coast-44669.herokuapp.com/");
 
     socketTemp.on("connect", () => {
       this.setState({ socketObject: socketTemp });

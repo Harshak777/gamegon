@@ -7,8 +7,11 @@ import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import { Typography } from "@material-ui/core";
 import CircularProgress from '@mui/material/CircularProgress';
+import { useHistory } from "react-router-dom";
 
-export default function loserpage() {
+export default function LoserPage() {
+  const history = useHistory();
+
   return (
     <>
       <CssBaseline />
@@ -29,7 +32,7 @@ export default function loserpage() {
       NT Keep Trying.........
       </Typography></DialogContent>
         <DialogActions>
-          <Button>ooooh.</Button>
+          <Button onClick={() => {history.push("/");}}>Home</Button>
         </DialogActions>
       </Dialog>
       <Box

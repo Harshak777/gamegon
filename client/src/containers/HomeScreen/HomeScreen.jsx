@@ -83,7 +83,7 @@ const HomeScreen = (props) => {
   }
 
   function chessSocket() {
-    const socketTemp = io("http://localhost:8080");
+    const socketTemp = io("https://dry-coast-44669.herokuapp.com/");
     console.log("Out");
     console.log(socketTemp);
     socketTemp.on("connect", () => {

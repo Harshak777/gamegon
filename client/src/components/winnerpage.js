@@ -7,8 +7,11 @@ import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import { Typography } from "@material-ui/core";
 import CircularProgress from '@mui/material/CircularProgress';
+import { useHistory } from "react-router-dom";
 
-export default function winnerpage() {
+export default function WinnerPage() {
+  const history = useHistory();
+
   return (
     <>
       <CssBaseline />
@@ -29,7 +32,7 @@ export default function winnerpage() {
       GG Keep Grinding..............
       </Typography></DialogContent>
         <DialogActions>
-          <Button>ooooh.</Button>
+          <Button onClick={() => {history.push("/");}}>Home</Button>
         </DialogActions>
       </Dialog>
       <Box

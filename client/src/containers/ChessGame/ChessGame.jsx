@@ -5,24 +5,24 @@ import io from "socket.io-client";
 import Web3 from "web3";
 import contract from "../../components/contract";
 import Loadingpage from "../../components/Loadingpage";
-import  "../../index.css"
+import  "../../index.css";
+import { useHistory } from "react-router-dom";
 
 const ChessGame = (props) => {
   const [chessGameObject, setChessGameObject] = useState(new Chess());
   // const chessGameObject = new Chess();
   const [inGame, setInGame] = useState(false);
-  const [currentPositionFen, setCurrentPositionFen] = useState(
-    chessGameObject.fen()
-  );
+  const [currentPositionFen, setCurrentPositionFen] = useState(chessGameObject.fen());
   const [userColor, setUserColor] = useState("");
   const [sourceSquare, setSourceSquare] = useState("");
   const [targetSquare, setTargetSquare] = useState("");
   const [socketObject, setSocketObject] = useState(null);
   const [gameId, setGameId] = useState(null);
   const [account, setAccount] = useState("");
+  const history = useHistory();
 
   useEffect(() => {
-    let socketTemp = io("http://localhost:8080");
+    let socketTemp = io("https://dry-coast-44669.herokuapp.com/");
 
     setUserColor(props.location.state.color);
     setInGame(props.location.state.inGame);
@@ -55,6 +55,7 @@ const ChessGame = (props) => {
             if (chessGameObject.game_over() === true) {
               console.log("GAME OVER");
               //trigger modal and end the game
+              history.push("/notwinner");
             }
           }
         });
@@ -126,7 +127,8 @@ const ChessGame = (props) => {
 
         // resolveBet(props.location.state.betId, winner);
         console.log(resolveBet(props.location.state.betId, winner));
-        //trigger modal and end game
+        history.push("/winner");
+        //trigger modal and end game    
       }
     }
   };

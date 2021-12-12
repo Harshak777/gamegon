@@ -1,11 +1,12 @@
 const http = require("http");
 const express = require("express");
+require('dotenv').config();
 
 const app = express(); // creating instance of express
 const server = http.createServer(app); // creating http server from express instance & enabling cross access origin resource sharing
 
-const PORT = 8080;
-let URLfrontEnd = "http://localhost:3000";
+const PORT = process.env.PORT || 8080;
+let URLfrontEnd = "https://quirky-raman-0a3d9e.netlify.app";
 
 const io = require("socket.io")(server, {
   cors: {
@@ -16,11 +17,11 @@ const io = require("socket.io")(server, {
 }); // creating socketio server side with express http server
 
 io.on("connection", (socket) => {
-
   console.log("a user connected");
 
-  socket.on("finalShake", (Object) => {
-    socket.broadcast.emit(Object.ownerId, Object);
+  socket.on("finalShake", (name) => {
+    console.log(name);
+    socket.broadcast.emit(name, "hello");
   });
 
   socket.on("JoinGame", (joinObject) => {
@@ -33,7 +34,6 @@ io.on("connection", (socket) => {
     console.log("Position send worked");
     socket.broadcast.emit("NewFenFromServer", FENinfo);
   });
-
 });
 
 server.listen(PORT, () => console.log(`Server running on port:${PORT}`));
