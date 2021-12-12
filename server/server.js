@@ -6,7 +6,7 @@ const app = express(); // creating instance of express
 const server = http.createServer(app); // creating http server from express instance & enabling cross access origin resource sharing
 
 const PORT = process.env.PORT || 8080;
-let URLfrontEnd = "https://quirky-raman-0a3d9e.netlify.app";
+let URLfrontEnd = "https://wonderful-spence-c3e061.netlify.app";
 
 const io = require("socket.io")(server, {
   cors: {
