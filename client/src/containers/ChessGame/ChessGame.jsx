@@ -4,6 +4,8 @@ import Chess from "chess.js";
 import io from "socket.io-client";
 import Web3 from "web3";
 import contract from "../../components/contract";
+import Loadingpage from "../../components/Loadingpage";
+import  "../../index.css"
 
 const ChessGame = (props) => {
   const [chessGameObject, setChessGameObject] = useState(new Chess());
@@ -171,7 +173,7 @@ const ChessGame = (props) => {
     );
     return <div>{UserMenu}</div>;
   } else {
-    return <div>Loading</div>;
+    return <div><Loadingpage/></div>;
   }
 };
 

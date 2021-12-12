@@ -26,6 +26,7 @@ import Stack from '@mui/material/Stack';
 
 const HomeScreen = (props) => {
   const [account, setAccount] = useState("");
+  const [balance, setBalance] = useState("");
   const [isloading, setIsloading] = useState(true);
 
   const [servername, setserverValue] = useState("");
@@ -61,7 +62,11 @@ const HomeScreen = (props) => {
         const web3 = result;
         web3.eth.getAccounts().then((accounts) => {
           setAccount(accounts[0]);
-        }); // we instantiate our contract next
+          web3.eth.getBalance(accounts[0], (err, balance) => {
+            setBalance( web3.utils.fromWei(balance, "ether") + " MATIC")
+          });
+        }); 
+      // we instantiate our contract next
       });
       chessSocket();
       console.log(account);
@@ -96,7 +101,7 @@ const HomeScreen = (props) => {
   async function publishBet() {
     console.log("came");
     console.log(userSocketId);
-
+    if(game != "" && value!= ""){
     const web3 = new Web3(Web3.givenProvider);
     console.log(contract);
     contract.methods
@@ -118,6 +123,10 @@ const HomeScreen = (props) => {
           },
         });
       });
+    }
+    else{
+      alert("Please the input")
+    }
   }
 
 
@@ -146,19 +155,21 @@ const HomeScreen = (props) => {
       <Button variant="outlined">Outlined</Button>
     </Stack>
           </Grid> */}
-
+<Paper sx={{ p: 1, display: 'flex', flexDirection: 'column' }}>
       <Grid
         container
         direction="column"
         justifyContent="space-evenly"
         alignItems="center"
         spacing={2}
-      >
-         <Typography component="h2" variant="h6" color="primary" gutterBottom>
-     Create  GAME
+      ><Grid item>
+
+         <Typography component="h5" variant="h4" color="primary" >
+     Create  Game
     </Typography>
+    </Grid>
         <Grid item>
-          <h1>Your Account {account}</h1>
+          <h4> Account: {account.substr(0,6)+"...."+account.substr(36,42)}  /   Balance: {balance.substr(0,5)+" MATIC"} </h4>
         </Grid>
         <Grid item>
           <TextField
@@ -166,13 +177,14 @@ const HomeScreen = (props) => {
             id="outlined-required"
             label="Game Name"
             value={game}
+            required
             onChange={handlegameChange}
           />
         </Grid>
         <Grid item>
           <TextField
             id="filled-number"
-            label="Bet amount"
+            label="Stake amount"
             type="number"
             required
             InputLabelProps={{
@@ -181,6 +193,7 @@ const HomeScreen = (props) => {
             variant="filled"
             value={value}
             onChange={handlevalueChange}
+            required
           />
         </Grid>
         <Grid item>
@@ -188,6 +201,7 @@ const HomeScreen = (props) => {
             CREATE NEW GAME
           </Button>
         </Grid>
+      
         {/* <Grid item>
           <Button
             variant="outlined"
@@ -200,7 +214,9 @@ const HomeScreen = (props) => {
           </Button>
         </Grid> */}
       </Grid>
-      <Grid item xs={12}>
+      </Paper>
+      <br/>
+      <Grid item xs={12}  >
                 <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
                   <Livegame />
                 </Paper>
