@@ -1,7 +1,8 @@
 {
-  "name": "gamegon-client",
+  "name": "gamegon-server",
   "version": "0.0.1",
   "private": true,
+  "main": "server.js",
   "dependencies": {
     "@emotion/react": "^11.7.0",
     "@emotion/styled": "^11.6.0",
@@ -27,30 +28,10 @@
     "socket.io": "^3.0.4",
     "socket.io-client": "^3.0.4",
     "web-vitals": "^0.2.4",
-    "web3": "^1.0.0-beta.26"
+    "web3": "^1.0.0-beta.26",
+    "dotenv": "^10.0.0"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
-  },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
+    "start-server": "node server.js"
   }
 }

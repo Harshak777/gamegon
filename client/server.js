@@ -1,12 +1,11 @@
 const http = require("http");
 const express = require("express");
-require('dotenv').config();
 
 const app = express(); // creating instance of express
 const server = http.createServer(app); // creating http server from express instance & enabling cross access origin resource sharing
 
-const PORT = process.env.PORT || 8080;
-let URLfrontEnd = "https://quirky-raman-0a3d9e.netlify.app";
+const PORT = 8080;
+let URLfrontEnd = "http://localhost:3000";
 
 const io = require("socket.io")(server, {
   cors: {
