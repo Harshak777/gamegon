@@ -1,5 +1,9 @@
 # Gamegon
 
+You can find the video demo [here](https://youtu.be/8daTnCkPKe0).
+
+You can try it out [here](https://wonderful-spence-c3e061.netlify.app/).
+
 ## Project Description
 
 Gamegon allows an individual to play PvP games, where they get a chance to win 2x rewards by staking their desired amount of MATIC tokens.
