@@ -44,12 +44,12 @@ function MainFeaturedPost(props) {
             }}
           >
             <Typography component="h1" variant="h3" color="inherit" gutterBottom>
-              {post.title}
+             GAMEGON
             </Typography>
             <Typography variant="h5" color="inherit" paragraph>
-              {post.description}
+            Gamegon allows an individual to play PvP games, where they get a chance to win 2x rewards by staking their desired amount of MATIC tokens.
             </Typography>
-            <Link variant="subtitle1" href="#">
+            <Link variant="subtitle1" href="https://github.com/Harshak777/gamegon">
               {post.linkText}
             </Link>
           </Box>
