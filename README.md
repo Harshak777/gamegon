@@ -73,11 +73,18 @@ npm run start
 - Earn a rare NFT as a badge for winning against another player
 - Stake tokens and get rewarded at zero gas fees
 - Enable swapping between tokens that are to be staked
-- Add more games to Gamegon
+- More games to be added to Gamegon. (You can find the list of games to be added [here](#games-to-be-added))
 - Enhance the user-interface
 - Add chat feature
 - Streaming live games
 - Enable staking tokens on the players playing live games
+- Build a personalized dashboard to keep track of the games played
+- A leaderboard displaying the game wins of players
+
+## Games to be added
+- Tic-tac-toe
+- Rock-paper-scissor
+- Snake and ladder
 
 ## Team
 - [Harshak Krishna](https://github.com/Harshak777)
