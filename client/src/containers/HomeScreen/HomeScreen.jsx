@@ -22,12 +22,11 @@ import { Typography } from "@material-ui/core";
 
 import Stack from '@mui/material/Stack';
 
-
-
 const HomeScreen = (props) => {
   const [account, setAccount] = useState("");
   const [balance, setBalance] = useState("");
   const [isloading, setIsloading] = useState(true);
+  const [web3, setWeb3] = useState(null);
 
   const [servername, setserverValue] = useState("");
   const [value, setValue] = useState("");
@@ -49,30 +48,36 @@ const HomeScreen = (props) => {
     linkText: 'Continue reading…',
   };
 
-
-
-  useEffect(() => {
-    //============LOADING ADDRESS=============
-    async function loadBlockChain() {
-      // console.log(web3);
-      // const web3 = new Web3(Web3.givenProvider);
-      // const accounts = await web3.eth.getAccounts();
-      // setAccount(accounts[0]);
-      getWeb3().then((result) => {
-        const web3 = result;
-        web3.eth.getAccounts().then((accounts) => {
-          setAccount(accounts[0]);
-          web3.eth.getBalance(accounts[0], (err, balance) => {
-            setBalance( web3.utils.fromWei(balance, "ether") + " MATIC")
-          });
-        }); 
-      // we instantiate our contract next
-      });
-      chessSocket();
-      console.log(account);
+  async function loadWeb3() {
+    if (window.ethereum) {
+      window.web3 = new Web3(window.ethereum)
+      await window.ethereum.enable()
     }
-    loadBlockChain();
-  }, []);
+    else if (window.web3) {
+      window.web3 = new Web3(window.web3.currentProvider)
+    }
+    else {
+      window.alert('Non-Ethereum browser detected. You should consider trying MetaMask!')
+    }
+  }
+
+
+  useEffect(async () => {
+
+    await loadWeb3();
+    await setAccountDetails();
+
+    chessSocket();
+  });
+
+  async function setAccountDetails() {
+    let accounts = await window.web3.eth.getAccounts();
+    setAccount(accounts[0]);
+    window.web3.eth.getBalance(accounts[0], (err, balance) => {
+      setBalance( window.web3.utils.fromWei(balance, "ether") + " MATIC");
+      setIsloading(false);
+    });
+  }
 
   function handlevalueChange(event) {
     setValue(event.target.value);
@@ -133,6 +138,8 @@ const HomeScreen = (props) => {
   //=========================style========================
   const theme = createTheme();
 
+  if(isloading) return <div>hi</div>;
+  else
 
   return (
     
