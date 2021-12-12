@@ -62,6 +62,10 @@ npm install
 npm run start
 ```
 
+## Contract
+
+To interact with Gamegon contracts, you can use the contract address `0x851C0f6078B81E0ec2Da4eCC9ca7F2f5F0296664`.
+
 ## Techstack
 - [ReactJS](https://github.com/facebook/react)
 - [NodeJS](https://github.com/nodejs)
